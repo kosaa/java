@@ -44,7 +44,6 @@ public class Dijkstra {
         }
 
         if (startPoint == null || !startPoint.getIdentifier().equals(a.getIdentifier())) {
-            System.out.println("do calc");
             dist.clear();
             pred.clear();
             visitedPoints.clear();
