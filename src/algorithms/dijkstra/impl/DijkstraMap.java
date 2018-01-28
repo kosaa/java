@@ -1,4 +1,4 @@
-package dijkstra.impl;
+package algorithms.dijkstra.impl;
 
 import java.util.HashMap;
 import java.util.HashSet;

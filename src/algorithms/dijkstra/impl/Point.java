@@ -1,4 +1,4 @@
-package dijkstra.impl;
+package algorithms.dijkstra.impl;
 
 public class Point implements Vertex {
 

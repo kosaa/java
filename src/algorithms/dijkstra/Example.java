@@ -1,8 +1,8 @@
-package dijkstra;
+package algorithms.dijkstra;
 
-import dijkstra.impl.Dijkstra;
-import dijkstra.impl.DijkstraPath;
-import dijkstra.impl.Point;
+import algorithms.dijkstra.impl.Dijkstra;
+import algorithms.dijkstra.impl.DijkstraPath;
+import algorithms.dijkstra.impl.Point;
 
 public class Example {
     public static void main(String[] args) {
