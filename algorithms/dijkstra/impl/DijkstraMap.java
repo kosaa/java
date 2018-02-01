@@ -35,6 +35,23 @@ public class DijkstraMap {
 		map.clear();
 	}
 
+	public Double getDist(Vertex a, Vertex b) {
+		Set<Vertex> unique = getUniqueVerticesList();
+		if (!unique.contains(a)) {
+			throw new RuntimeException("Vertex " + a + " doesn't exist.");
+		}
+
+		if (!unique.contains(b)) {
+			throw new RuntimeException("Vertex " + b + " doesn't exist.");
+		}
+
+		if (!map.get(a).containsKey(b)) {
+			throw new RuntimeException("Vertex " + a  + " isn't connected with " + b + ".");
+		}
+
+		return map.get(a).get(b);
+	}
+
 	public boolean vertexExists(Vertex v) {
 		return getUniqueVerticesList().contains(v);
 	}
@@ -56,17 +73,5 @@ public class DijkstraMap {
 		} else {
 			return new HashSet<>();
 		}
-	}
-
-	public Double getDist(Vertex a, Vertex b) {
-		if (!map.containsKey(a)) {
-			throw new RuntimeException("Vertex " + a + " doesn't exist.");
-		}
-
-		if (!map.get(a).containsKey(b)) {
-			throw new RuntimeException("Vertex " + a  + " isn't connected with " + b + ".");
-		}
-
-		return map.get(a).get(b);
 	}
 }
