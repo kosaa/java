@@ -76,10 +76,13 @@ public class Dijkstra {
 
 		for (int i = 0; i < map.getUniqueVerticesList().size(); ++i) {
 			setAsVisited(current);
-			Set<Vertex> availableVertices = map.getAvailableVerticesFrom(current);
 
-			for (Vertex v : availableVertices) {
-				if (!isVisited(v) && (!dist.containsKey(v) || dist.get(current) + map.getDist(current, v) < dist.get(v))) {
+			for (Vertex v : map.getAvailableVerticesFrom(current)) {
+				if (isVisited(v)) {
+					continue;
+				}
+
+				if (!dist.containsKey(v) || dist.get(current) + map.getDist(current, v) < dist.get(v)) {
 					dist.put(v, dist.get(current) + map.getDist(current, v));
 					pred.put(v, current);
 				}
@@ -87,6 +90,14 @@ public class Dijkstra {
 
 			current = closestVertex();
 		}
+	}
+
+	private void setAsVisited(Vertex v) {
+		visitedVertices.put(v, true);
+	}
+
+	private boolean isVisited(Vertex v) {
+		return visitedVertices.containsKey(v);
 	}
 
 	private Vertex closestVertex() {
@@ -101,14 +112,6 @@ public class Dijkstra {
 		}
 
 		return closest;
-	}
-
-	private void setAsVisited(Vertex v) {
-		visitedVertices.put(v, true);
-	}
-
-	private boolean isVisited(Vertex v) {
-		return visitedVertices.containsKey(v);
 	}
 
 	public Set<Vertex> getUniqueVerticesList() {
