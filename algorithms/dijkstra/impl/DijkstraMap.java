@@ -10,9 +10,15 @@ public class DijkstraMap {
 
 	public void add(Vertex a, Vertex b, double distance) {
 		validDistance(distance);
-		HashMap<Vertex, Double> inner = this.map.computeIfAbsent(a, k -> new HashMap<>());
+		HashMap<Vertex, Double> inner = map.computeIfAbsent(a, k -> new HashMap<>());
 
 		inner.put(b, distance);
+	}
+
+	private void validDistance(double value) {
+		if (value <= 0) {
+			throw new RuntimeException("Distance must be greater than zero.");
+		}
 	}
 
 	public void remove(Vertex a, Vertex b) {
@@ -26,39 +32,41 @@ public class DijkstraMap {
 	}
 
 	public void clear() {
-		this.map.clear();
+		map.clear();
 	}
 
-	private void validDistance(double value) {
-		if (value <= 0) {
-			throw new RuntimeException("Distance must be greater than zero.");
-		}
+	public boolean vertexExists(Vertex v) {
+		return getUniqueVerticesList().contains(v);
 	}
 
 	public Set<Vertex> getUniqueVerticesList() {
-		HashSet<Vertex> uniq = new HashSet<>();
+		HashSet<Vertex> unique = new HashSet<>();
 
 		for (Vertex from : map.keySet()) {
-			uniq.add(from);
-			uniq.addAll(map.get(from).keySet());
+			unique.add(from);
+			unique.addAll(map.get(from).keySet());
 		}
 
-		return uniq;
+		return unique;
 	}
 
 	public Set<Vertex> getAvailableVerticesFrom(Vertex v) {
-		if (this.map.containsKey(v)) {
-			return this.map.get(v).keySet();
+		if (map.containsKey(v)) {
+			return map.get(v).keySet();
 		} else {
 			return new HashSet<>();
 		}
 	}
 
 	public Double getDist(Vertex a, Vertex b) {
-		return this.map.get(a).get(b);
-	}
+		if (!map.containsKey(a)) {
+			throw new RuntimeException("Vertex " + a + " doesn't exist.");
+		}
 
-	public boolean vertexExists(Vertex v) {
-		return getUniqueVerticesList().contains(v);
+		if (!map.get(a).containsKey(b)) {
+			throw new RuntimeException("Vertex " + a  + " isn't connected with " + b + ".");
+		}
+
+		return map.get(a).get(b);
 	}
 }

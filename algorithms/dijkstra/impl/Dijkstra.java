@@ -115,6 +115,6 @@ public class Dijkstra {
 	}
 
 	public Set<Vertex> getUniqueVerticesList() {
-		return this.map.getUniqueVerticesList();
+		return map.getUniqueVerticesList();
 	}
 }
