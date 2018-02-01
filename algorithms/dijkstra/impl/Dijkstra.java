@@ -28,7 +28,7 @@ public class Dijkstra {
         startPoint = null;
         map.remove(a, b);
     }
-
+//A
     public void clear() {
         startPoint = null;
         map.clear();
