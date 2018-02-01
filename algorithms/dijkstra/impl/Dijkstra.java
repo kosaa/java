@@ -6,113 +6,112 @@ import java.util.Set;
 
 public class Dijkstra {
 
-    private HashMap<Vertex, Double> dist = new HashMap<>();
+	private HashMap<Vertex, Double> dist = new HashMap<>();
 
-    private HashMap<Vertex, Vertex> pred = new HashMap<>();
+	private HashMap<Vertex, Vertex> pred = new HashMap<>();
 
-    private HashMap<Vertex, Boolean> visitedPoints = new HashMap<>();
+	private HashMap<Vertex, Boolean> visitedVertices = new HashMap<>();
 
-    private DijkstraMap map = new DijkstraMap();
+	private DijkstraMap map = new DijkstraMap();
 
-    private Vertex startPoint;
+	private Vertex startVertex;
 
-    public void add(Vertex a, Vertex b, int distance) {
-        add(a, b, (double) distance);
-    }
+	public void add(Vertex a, Vertex b, int distance) {
+		add(a, b, (double) distance);
+	}
 
-    public void add(Vertex a, Vertex b, double distance) {
-        map.add(a, b, distance);
-    }
+	public void add(Vertex a, Vertex b, double distance) {
+		map.add(a, b, distance);
+	}
 
-    public void remove(Vertex a, Vertex b) {
-        startPoint = null;
-        map.remove(a, b);
-    }
-//A
-    public void clear() {
-        startPoint = null;
-        map.clear();
-    }
+	public void remove(Vertex a, Vertex b) {
+		startVertex = null;
+		map.remove(a, b);
+	}
 
-    public DijkstraPath getShortestPath(Vertex a, Vertex b) {
-        if (!map.pointExist(a)) {
-            throw new RuntimeException("Point " + a + " doesn't exist.");
-        }
+	public void clear() {
+		startVertex = null;
+		map.clear();
+	}
 
-        if (!map.pointExist(b)) {
-            throw new RuntimeException("Point " + b + " doesn't exist.");
-        }
+	public DijkstraPath getShortestPath(Vertex a, Vertex b) {
+		if (!map.vertexExists(a)) {
+			throw new RuntimeException("Vertex " + a + " doesn't exist.");
+		}
 
-        if (startPoint == null || !startPoint.getIdentifier().equals(a.getIdentifier())) {
-            dist.clear();
-            pred.clear();
-            visitedPoints.clear();
-            startPoint = a;
+		if (!map.vertexExists(b)) {
+			throw new RuntimeException("Vertex " + b + " doesn't exist.");
+		}
 
-            init();
-        }
+		if (startVertex == null || !startVertex.getIdentifier().equals(a.getIdentifier())) {
+			dist.clear();
+			pred.clear();
+			visitedVertices.clear();
+			startVertex = a;
 
-        if (dist.containsKey(b)) {
-            return new DijkstraPath(createPointList(b), dist.get(b));
-        } else {
-            return new DijkstraPath(new ArrayList<>(), -1);
-        }
-    }
+			init();
+		}
 
-    private ArrayList<Vertex> createPointList(Vertex point) {
-        ArrayList<Vertex> path = new ArrayList<>();
+		if (dist.containsKey(b)) {
+			return new DijkstraPath(createListTo(b), dist.get(b));
+		} else {
+			return new DijkstraPath(new ArrayList<>(), -1);
+		}
+	}
 
-        while (point != null) {
-            path.add(0, point);
-            point = pred.get(point);
-        }
+	private ArrayList<Vertex> createListTo(Vertex v) {
+		ArrayList<Vertex> path = new ArrayList<>();
 
-        return path;
-    }
+		do {
+			path.add(0, v);
+		} while ((v = pred.get(v)) != null);
 
-    private void init() {
-        dist.put(startPoint, 0.0);
-        pred.put(startPoint, null);
-        Vertex current = startPoint;
+		return path;
+	}
 
-        for (int i = 0; i < map.getPoints().size(); ++i) {
-            setPointVisited(current);
-            Set<Vertex> availablePoints = map.getAvailablePointsFor(current);
+	private void init() {
+		dist.put(startVertex, 0.0);
+		pred.put(startVertex, null);
+		Vertex current = startVertex;
 
-            for (Vertex point : availablePoints) {
-                if (!isPointVisited(point) && (!dist.containsKey(point) || dist.get(current) + map.getDist(current, point) < dist.get(point))) {
-                    dist.put(point, dist.get(current) + map.getDist(current, point));
-                    pred.put(point, current);
-                }
-            }
+		for (int i = 0; i < map.getUniqueVerticesList().size(); ++i) {
+			setAsVisited(current);
+			Set<Vertex> availableVertices = map.getAvailableVerticesFrom(current);
 
-            current = closestPoint();
-        }
-    }
+			for (Vertex v : availableVertices) {
+				if (!isVisited(v) && (!dist.containsKey(v) || dist.get(current) + map.getDist(current, v) < dist.get(v))) {
+					dist.put(v, dist.get(current) + map.getDist(current, v));
+					pred.put(v, current);
+				}
+			}
 
-    private Vertex closestPoint() {
-        double min = Integer.MAX_VALUE;
-        Vertex closest = null;
+			current = closestVertex();
+		}
+	}
 
-        for (Vertex point : map.getPoints()) {
-            if (!isPointVisited(point) && dist.get(point) != null && dist.get(point) < min) {
-                closest = point;
-                min = dist.get(point);
-            }
-        }
+	private Vertex closestVertex() {
+		double min = Integer.MAX_VALUE;
+		Vertex closest = null;
 
-        return closest;
-    }
+		for (Vertex v : map.getUniqueVerticesList()) {
+			if (!isVisited(v) && dist.get(v) != null && dist.get(v) < min) {
+				closest = v;
+				min = dist.get(v);
+			}
+		}
 
-    private void setPointVisited(Vertex point) {
-        visitedPoints.put(point, true);
-    }
+		return closest;
+	}
 
-    private boolean isPointVisited(Vertex point) {
-        return visitedPoints.containsKey(point);
-    }
+	private void setAsVisited(Vertex v) {
+		visitedVertices.put(v, true);
+	}
 
-    public Set<Vertex> getUniquePoints() {
-        return this.map.getPoints();
-    }
+	private boolean isVisited(Vertex v) {
+		return visitedVertices.containsKey(v);
+	}
+
+	public Set<Vertex> getUniqueVerticesList() {
+		return this.map.getUniqueVerticesList();
+	}
 }
