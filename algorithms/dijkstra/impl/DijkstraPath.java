@@ -4,28 +4,29 @@ import java.util.ArrayList;
 
 public class DijkstraPath {
 
-    private final double distance;
-    private ArrayList<Vertex> points;
+	private final double distance;
 
-    public DijkstraPath(ArrayList<Vertex> points, double distance) {
-        this.points = points;
-        this.distance = distance;
-    }
+	private ArrayList<Vertex> vertices;
 
-    public ArrayList<Vertex> points() {
-        return new ArrayList<>(points);
-    }
+	public DijkstraPath(ArrayList<Vertex> vertices, double distance) {
+		this.vertices = vertices;
+		this.distance = distance;
+	}
 
-    public int size() {
-        return this.points.size();
-    }
+	public ArrayList<Vertex> vertices() {
+		return new ArrayList<>(vertices);
+	}
 
-    public double distance() {
-        return distance;
-    }
+	public int size() {
+		return this.vertices.size();
+	}
 
-    @Override
-    public String toString() {
-        return points.toString();
-    }
+	public double distance() {
+		return distance;
+	}
+
+	@Override
+	public String toString() {
+		return vertices.toString();
+	}
 }

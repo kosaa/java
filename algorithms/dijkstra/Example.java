@@ -23,7 +23,7 @@ public class Example {
 
         DijkstraPath path = dijkstra.getShortestPath(A, E);
 
-        System.out.println("Path: " + path.points());
+        System.out.println("Path: " + path.vertices());
         System.out.println("Size: " + path.size());
         System.out.println("Distance: " + path.distance());
     }
