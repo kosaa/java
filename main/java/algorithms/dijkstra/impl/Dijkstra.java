@@ -88,7 +88,7 @@ public class Dijkstra {
 				}
 			}
 
-			current = closestVertex();
+			current = findClosestVertex();
 		}
 	}
 
@@ -100,18 +100,18 @@ public class Dijkstra {
 		return visitedVertices.containsKey(v);
 	}
 
-	private Vertex closestVertex() {
-		double min = Integer.MAX_VALUE;
-		Vertex closest = null;
+	private Vertex findClosestVertex() {
+		Vertex vertex = null;
+		double distanceToVertex = Integer.MAX_VALUE;
 
 		for (Vertex v : map.getUniqueVerticesList()) {
-			if (!isVisited(v) && dist.get(v) != null && dist.get(v) < min) {
-				closest = v;
-				min = dist.get(v);
+			if (!isVisited(v) && dist.get(v) != null && dist.get(v) < distanceToVertex) {
+				vertex = v;
+				distanceToVertex = dist.get(v);
 			}
 		}
 
-		return closest;
+		return vertex;
 	}
 
 	public Set<Vertex> getUniqueVerticesList() {
