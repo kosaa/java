@@ -55,7 +55,7 @@ public class Dijkstra {
 		if (dist.containsKey(b)) {
 			return new DijkstraPath(createListTo(b), dist.get(b));
 		} else {
-			return new DijkstraPath(new ArrayList<>(), -1);
+			return new DijkstraPath(new ArrayList<Vertex>(), -1);
 		}
 	}
 
