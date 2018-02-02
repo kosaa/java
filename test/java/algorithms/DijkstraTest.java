@@ -3,15 +3,21 @@ package algorithms;
 import algorithms.dijkstra.impl.Dijkstra;
 import algorithms.dijkstra.impl.DijkstraPath;
 import algorithms.dijkstra.impl.Point;
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class DijkstraTest {
 
 	private Point A = new Point("A");
+
 	private Point B = new Point("B");
+
 	private Point C = new Point("C");
+
 	private Point D = new Point("D");
+
 	private Point E = new Point("E");
 
 	@Test
@@ -26,6 +32,9 @@ public class DijkstraTest {
 
 		Assert.assertEquals(path.size(), 2.0, 0);
 		Assert.assertEquals(path.distance(), 3.0, 0);
+
+		List<Point> pattern = Arrays.asList(A, C);
+		Assert.assertTrue(path.vertices().equals(pattern));
 	}
 
 	@Test
@@ -43,5 +52,8 @@ public class DijkstraTest {
 
 		Assert.assertEquals(path.size(), 5.0, 0);
 		Assert.assertEquals(path.distance(), 7.0, 0);
+
+		List<Point> pattern = Arrays.asList(A, B, D, C, E);
+		Assert.assertTrue(path.vertices().equals(pattern));
 	}
 }
