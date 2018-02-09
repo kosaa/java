@@ -45,19 +45,19 @@ public class BezierCurve {
 			return getPercentagePoint(percent, parr.get(0), parr.get(1));
 		}
 
-		List<Point> pointArray = new ArrayList<>();
+		List<Point> pointsList = new ArrayList<>();
 		for (int i = 1; i < parr.size(); ++i) {
-			pointArray.add(getPercentagePoint(percent, parr.get(i - 1), parr.get(i)));
+			pointsList.add(getPercentagePoint(percent, parr.get(i - 1), parr.get(i)));
 		}
 
-		return getPoint(percent, pointArray);
+		return getPoint(percent, pointsList);
 	}
 
 	private Point getPercentagePoint(final double percent, Point a, Point b) {
-		int px = (int) ((1 - percent) * a.getX() + percent * b.getX());
-		int py = (int) ((1 - percent) * a.getY() + percent * b.getY());
+		int x = (int) ((1 - percent) * a.getX() + percent * b.getX());
+		int y = (int) ((1 - percent) * a.getY() + percent * b.getY());
 
-		return new Point(px, py);
+		return new Point(x, y);
 	}
 
 	private List<Point> mergeEqualNeighbors(List<Point> curvePoints) {

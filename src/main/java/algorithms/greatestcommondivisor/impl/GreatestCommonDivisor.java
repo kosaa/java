@@ -12,7 +12,7 @@ public class GreatestCommonDivisor {
 	}
 
 	private static void validValue(int v) {
-		if (v == 0 || v < 0) {
+		if (v <= 0) {
 			throw new RuntimeException("Values must be greater that zero.");
 		}
 	}
