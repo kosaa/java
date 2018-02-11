@@ -10,11 +10,7 @@ public class KDTree {
 
 	private final int K;
 
-	public static KDTree ofDimension(int k) {
-		return new KDTree(k);
-	}
-
-	private KDTree(int k) {
+	public KDTree(int k) {
 		if (k < 1) {
 			throw new RuntimeException("Dimension must be greater or equals to one.");
 		}
@@ -27,30 +23,13 @@ public class KDTree {
 	}
 
 	public void clear() {
+		resetDistance();
 		root = null;
-		best = null;
-		best_dist = Integer.MAX_VALUE;
 	}
 
 	public void insert(KDPoint p) {
 		validPoint(p);
 		root = insert(root, p, 0);
-	}
-
-	private void validPoint(KDPoint p) {
-		if (p.getDimension() != K) {
-			throw new RuntimeException("Incorrect point dimension.");
-		}
-	}
-
-	public KDPoint findNN(KDPoint p) {
-		validPoint(p);
-		best = null;
-		best_dist = Integer.MAX_VALUE;
-
-		findNN(p, root, 0);
-
-		return best;
 	}
 
 	private KDNode insert(KDNode root, KDPoint p, int axis) {
@@ -69,13 +48,28 @@ public class KDTree {
 		return root;
 	}
 
+	private void validPoint(KDPoint p) {
+		if (p.getDimension() != K) {
+			throw new RuntimeException("Incorrect point dimension.");
+		}
+	}
+
+	public KDPoint findNN(KDPoint p) {
+		validPoint(p);
+		resetDistance();
+
+		findNN(p, root, 0);
+
+		return best;
+	}
+
 	private void findNN(KDPoint p, KDNode root, int axis) {
 		if (root == null) {
 			return;
 		}
 
 		axis = axis % K;
-		double dist = getDist(p, root.getLocation());
+		double dist = calcDist(p, root.getLocation());
 
 		if (dist < best_dist) {
 			best = root.getLocation();
@@ -84,27 +78,18 @@ public class KDTree {
 
 		if (p.getAxisValue(axis) < root.getLocation().getAxisValue(axis)) {
 			findNN(p, root.getLeft(), axis + 1);
-			if (getDist(p, getLineClosestPoint(p, root.getLocation(), axis + 1)) <= best_dist) {
+			if (calcDist(p, getLineClosestPoint(p, root.getLocation(), axis + 1)) <= best_dist) {
 				findNN(p, root.getRight(), axis + 1);
 			}
 		} else {
 			findNN(p, root.getRight(), axis + 1);
-			if (getDist(p, getLineClosestPoint(p, root.getLocation(), axis + 1)) <= best_dist) {
+			if (calcDist(p, getLineClosestPoint(p, root.getLocation(), axis + 1)) <= best_dist) {
 				findNN(p, root.getLeft(), axis + 1);
 			}
 		}
 	}
 
-	private KDPoint getLineClosestPoint(KDPoint p, KDPoint rootloc, int axis) {
-		axis = axis % K;
-		KDPoint newPoint = rootloc.clone();
-		newPoint.setAxisValue(axis, p.getAxisValue(axis));
-		return newPoint;
-	}
-
-	public double getDist(KDPoint p1, KDPoint p2) {
-		validPoint(p1);
-		validPoint(p2);
+	private double calcDist(KDPoint p1, KDPoint p2) {
 		double sum = 0;
 
 		for (int i = 0; i < K; ++i) {
@@ -114,7 +99,19 @@ public class KDTree {
 		return Math.sqrt(sum);
 	}
 
+	private KDPoint getLineClosestPoint(KDPoint p, KDPoint rootloc, int axis) {
+		axis = axis % K;
+		KDPoint newPoint = rootloc.clone();
+		newPoint.setAxisValue(axis, p.getAxisValue(axis));
+		return newPoint;
+	}
+
 	public double getBestDist() {
 		return best_dist;
+	}
+
+	private void resetDistance() {
+		best = null;
+		best_dist = Integer.MAX_VALUE;
 	}
 }

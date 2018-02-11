@@ -13,16 +13,16 @@ public class ExampleKDTree {
 	public static final int numberOfPoints = 10;
 
 	public static void main(String[] args) throws CloneNotSupportedException {
-		KDTree kdtree = KDTree.ofDimension(K);
+		KDTree kd = new KDTree(K);
 
 		for (int i = 0; i < numberOfPoints; ++i) {
-			kdtree.insert(generatePoint());
+			kd.insert(generatePoint());
 		}
 
-		KDPoint nearest = kdtree.findNN(generatePoint());
+		KDPoint nearest = kd.findNN(generatePoint());
 
 		System.out.println("Nearest neighbor: " + Arrays.toString(nearest.getAsVector()));
-		System.out.println("Distance: " + kdtree.getBestDist());
+		System.out.println("Distance: " + kd.getBestDist());
 	}
 
 	public static KDPointImpl generatePoint() {

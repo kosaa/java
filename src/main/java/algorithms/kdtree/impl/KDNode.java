@@ -9,6 +9,9 @@ public class KDNode {
 	private KDNode right;
 
 	public KDNode(KDPoint p) {
+		if (p == null) {
+			throw new RuntimeException("Point can't be null.");
+		}
 		this.point = p;
 	}
 
